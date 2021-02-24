@@ -16,16 +16,16 @@ then
     popd
 fi
 
-cat > ../submission/README.md <<EOF
+cat > log.md <<EOF
 # README
 
 Test results for submission at $(date)
 
 EOF
 
-cd ../submission
-git config --local user.email "action@github.com"
-git config --local user.name "GitHub Action"
-git add README.md 
-git commit -m "Automatic Tester Results"
-git push
+# cd ../submission
+# git config --local user.email "action@github.com"
+# git config --local user.name "GitHub Action"
+# git add README.md 
+# git commit -m "Automatic Tester Results"
+# git push
