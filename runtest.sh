@@ -7,7 +7,7 @@ project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2 | cut -d- -f2)
 if [ -e $project ]
 then
     pushd $project
-    if bash $project.sh >>log.txt 2>&1
+    if bash runtests.sh >>log.txt 2>&1
     then
         echo Success
     else
