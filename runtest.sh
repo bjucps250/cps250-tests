@@ -16,7 +16,7 @@ then
     popd
 fi
 
-echo > submission/README.md <<EOF
+cat > submission/README.md <<EOF
 # README
 
 Test results for submission at $(date)
@@ -29,5 +29,5 @@ cd submission
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
 git add README.md 
-git commit -m "Add/Update badge"
+git commit -m "Automatic Tester Results"
 git push
