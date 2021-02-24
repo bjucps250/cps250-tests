@@ -30,3 +30,4 @@ git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
 git add README.md 
 git commit -m "Add/Update badge"
+git push
