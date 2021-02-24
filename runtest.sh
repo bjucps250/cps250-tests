@@ -16,14 +16,14 @@ then
     popd
 fi
 
-cat > submission/README.md <<EOF
-# README
+# cat > submission/README.md <<EOF
+# # README
 
-Test results for submission at $(date)
-```
-$(cat log.txt)
-```
-EOF
+# Test results for submission at $(date)
+# ```
+# $(cat log.txt)
+# ```
+# EOF
 
 cd submission
 git config --local user.email "action@github.com"
