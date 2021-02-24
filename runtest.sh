@@ -16,7 +16,7 @@ then
     popd
 fi
 
-echo > submission/README.md <<<EOF
+echo > submission/README.md <<EOF
 # README
 
 Test results for submission at $(date)
