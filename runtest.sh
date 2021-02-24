@@ -23,7 +23,7 @@ Test results for submission at $(date)
 
 EOF
 
-cd submission
+cd ../submission
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
 git add README.md 
