@@ -26,6 +26,7 @@ EOF
 cd submission
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
+git pull
 git add README.md 
 git commit -m "Automatic Tester Results"
 git push
