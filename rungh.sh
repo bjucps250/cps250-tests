@@ -45,7 +45,7 @@ git config pull.rebase false  # merge (the default strategy)
 git pull 
 
 # Generate report
-gen-readme
+gen-readme $result
 
 git add README.md 
 git commit -m "Automatic Tester Results"
