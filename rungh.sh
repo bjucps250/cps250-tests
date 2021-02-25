@@ -34,11 +34,13 @@ else
     echo No tests for $project submissions... >$LOG_FILE
 fi
 
+git config --local user.email "action@github.com"
+git config --local user.name "GitHub Action"
+git pull
+
 # Generate report
 gen-readme
 
-git config --local user.email "action@github.com"
-git config --local user.name "GitHub Action"
 git add README.md 
 git commit -m "Automatic Tester Results"
 git push
