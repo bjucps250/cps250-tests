@@ -31,18 +31,22 @@ then
 
     run-tests
 else
-    echo No tests for $project submissions... >$LOG_FILE
+    echo No tests have been defined for $project submissions... >$LOG_FILE
 fi
 
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
-git pull
+git config pull.rebase false  # merge (the default strategy)
+
+git pull 
 
 # Generate report
 gen-readme
 
 git add README.md 
 git commit -m "Automatic Tester Results"
+
+echo "Publishing README.md..."
 git push
 
 test $result = PASS

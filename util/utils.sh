@@ -53,7 +53,7 @@ function gen-readme {
     cat > $SUBMISSION_DIR/README.md <<EOF
 # Submission Status
 
-Test results for submission at **$(TZ=America/New_York date)**
+Test results generated at **$(TZ=America/New_York date)**
 
 Category | Test | Result
 ---------|------|-------
