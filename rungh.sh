@@ -18,7 +18,7 @@ export SUBMISSION_DIR=$(pwd)
 
 # Extract project name from GITHUB_REPOSITORY value
 # GITHUB_REPOSITORY should be of the form (ex.) cps250-project-student_reponame
-project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2 | cut -d- -f2)
+project=$(git remote get-url origin | cut -d/ -f5 | cut -d- -f2)
 echo "$project submission detected"
 
 export TEST_DIR=$TEST_BASE_DIR/$project
