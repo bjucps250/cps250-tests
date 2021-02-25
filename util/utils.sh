@@ -28,25 +28,27 @@ function fatal-errors-exist {
     grep "^$FAIL~$CAT_MUST_PASS" $TEST_RESULT_FILE >/dev/null
 }
 
+# Returns 0 on success, 1 on failure
 function run-tests {
     # Read test config if it exists
     if [ -r $TEST_DIR/config.sh ]; then
       . $TEST_DIR/config.sh
     fi
 
-    result=FAIL
+    result=0
     if BASH_ENV=$TEST_BASE_DIR/util/utils.sh timeout -k $TIMEOUT $TIMEOUT bash _runtests.sh >$LOG_FILE 2>&1
     then
-        fatal-errors-exist && result=FAIL
+        fatal-errors-exist && result=1
     else
         if [ $? -eq 124 ]; then
           report-error "$CAT_MUST_PASS" "Complete all tests within $TIMEOUT seconds"
         else
           report-error "$CAT_MUST_PASS" "Complete basic tests successfully"
         fi
-        result=FAIL
+        result=1
     fi
 
+    return $result
 }
 
 function gen-readme {

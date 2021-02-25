@@ -29,7 +29,11 @@ then
     # Copy test files to submission folder
     cp -r $TEST_DIR/_* .
 
-    run-tests
+    if run-tests; then
+      result=PASS
+    else
+      result=FAIL
+    fi
 else
     echo No tests have been defined for $project submissions... >$LOG_FILE
 fi
