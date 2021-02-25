@@ -13,7 +13,7 @@ if [ -z "$1" ]; then
 fi
 
 project=$1
-TEST_DIR=$TEST_BASE_DIR/$project
+export TEST_DIR=$TEST_BASE_DIR/$project
 
 # Cleanup previous test results if we're running in the same Docker container
 test -f $TEST_RESULT_FILE && rm $TEST_RESULT_FILE
@@ -23,7 +23,7 @@ test -d /submission && rm -r /submission
 cp -r /submission_src /submission
 cd /submission
 
-SUBMISSION_DIR=$(pwd)
+export SUBMISSION_DIR=$(pwd)
 
 result=PASS
 if [ -e $TEST_DIR/_runtests.sh ]

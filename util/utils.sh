@@ -3,8 +3,8 @@
 export TEST_RESULT_FILE=$BASEDIR/_testresults.log
 export LOG_FILE=$BASEDIR/_log.txt
 export TEST_BASE_DIR=$BASEDIR/tests
-export TEST_DIR=   # Must be set by script
-export SUBMISSION_DIR=   # Must be set by script
+#export TEST_DIR=   # Must be set by script
+#export SUBMISSION_DIR=   # Must be set by script
 export TIMEOUT=5  # default timeout in seconds
 
 # Constants
