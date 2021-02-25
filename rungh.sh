@@ -4,7 +4,7 @@
 # folder structure for a submission test and runs the test, then copies test results
 # to the student folder
 
-BASEDIR=$(pwd)
+export BASEDIR=$(pwd)
 . tests/util/utils.sh
 
 if [ ! -d submission ]; then
@@ -14,14 +14,14 @@ fi
 
 # Rest of script runs in submission folder
 cd submission
-SUBMISSION_DIR=$(pwd)
+export SUBMISSION_DIR=$(pwd)
 
 # Extract project name from GITHUB_REPOSITORY value
 # GITHUB_REPOSITORY should be of the form (ex.) cps250-project-student_reponame
 project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2 | cut -d- -f2)
 echo "$project submission detected"
 
-TEST_DIR=$TEST_BASE_DIR/$project
+export TEST_DIR=$TEST_BASE_DIR/$project
 
 result=PASS
 if [ -e $TEST_DIR/_runtests.sh ]
@@ -42,3 +42,5 @@ git config --local user.name "GitHub Action"
 git add README.md 
 git commit -m "Automatic Tester Results"
 git push
+
+test $result = PASS
