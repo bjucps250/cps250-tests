@@ -31,12 +31,12 @@ then
     # Copy test files to submission folder
     cp -r $TEST_DIR/_* .
 
-    run-tests
+    run-tests || result=FAIL
 else
     echo No tests for $project submissions... >$LOG_FILE
 fi
 
-gen-readme
+gen-readme $result
 
 echo Log file
 echo -------------------------

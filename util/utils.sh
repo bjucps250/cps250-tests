@@ -24,8 +24,12 @@ function report-result {
     echo "$1~$2~$3" >> $TEST_RESULT_FILE
 }
 
-function fatal-errors-exist {
+function must-pass-tests-failed {
     grep "^$FAIL~$CAT_MUST_PASS" $TEST_RESULT_FILE >/dev/null
+}
+
+function exit-if-must-pass-tests-failed {
+    must-pass-tests-failed && exit 1
 }
 
 # Returns 0 on success, 1 on failure
@@ -38,7 +42,7 @@ function run-tests {
     result=0
     if BASH_ENV=$TEST_BASE_DIR/util/utils.sh timeout -k $TIMEOUT $TIMEOUT bash _runtests.sh >$LOG_FILE 2>&1
     then
-        fatal-errors-exist && result=1
+        must-pass-tests-failed && result=1
     else
         if [ $? -eq 124 ]; then
           report-error "$CAT_MUST_PASS" "Complete all tests within $TIMEOUT seconds"

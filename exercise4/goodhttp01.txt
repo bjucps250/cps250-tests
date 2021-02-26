@@ -1,0 +1,2 @@
+GET /hello.htm HTTP/1.0
+

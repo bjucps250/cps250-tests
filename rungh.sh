@@ -29,14 +29,14 @@ then
     # Copy test files to submission folder
     cp -r $TEST_DIR/_* .
 
-    if run-tests; then
-      result=PASS
-    else
-      result=FAIL
-    fi
+    run-tests || result=FAIL
 else
     echo No tests have been defined for $project submissions... >$LOG_FILE
 fi
+
+# Generate report
+
+echo "Publishing README.md..."
 
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
@@ -44,13 +44,11 @@ git config pull.rebase false  # merge (the default strategy)
 
 git pull 
 
-# Generate report
 gen-readme $result
 
 git add README.md 
 git commit -m "Automatic Tester Results"
 
-echo "Publishing README.md..."
 git push
 
 test $result = PASS
