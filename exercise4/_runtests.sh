@@ -2,7 +2,7 @@ function runit {
     echo "******************************************************"
     echo Executing $*...
     echo "------------------------------------------------------"
-    $*
+    $* | head -20
 }
 
 require-files httpv.c Makefile
@@ -29,7 +29,7 @@ if [ $result = $FAIL ]; then
     echo "----------------------------------------------------------------"
 fi
 
-report-result $result "$CAT_MUST_PASS" "Compile check"
+report-result $result "$CAT_MUST_PASS" "Successful compile"
 
 exit-if-must-pass-tests-failed
 
@@ -48,7 +48,7 @@ do
   fi
 done
 
-report-result $result "Warnings" "Unsafe string function check"
+report-result $result "Warnings" "No unsafe string functions"
 
 cp $TEST_DIR/*.txt .
 
