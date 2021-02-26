@@ -5,6 +5,7 @@ function runit {
     $*
 }
 
+sudo apt-get install -y libbsd-dev
 
 require-files httpv.c Makefile
 
