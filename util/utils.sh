@@ -57,6 +57,8 @@ function run-tests {
 
 function gen-readme {
 
+    echo $1 >$SUBMISSION_DIR/submission.status
+
     if [ $1 = "PASS" ]; then
         icon=https://raw.githubusercontent.com/bjucps250/cps250-tests/master/images/pass.png
     else

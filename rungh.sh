@@ -46,7 +46,7 @@ git pull
 
 gen-readme $result
 
-git add README.md 
+git add README.md submission.status
 git commit -m "Automatic Tester Results"
 
 git push
