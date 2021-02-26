@@ -37,6 +37,9 @@ function run-tests {
     # Read test config if it exists
     if [ -r $TEST_DIR/config.sh ]; then
       . $TEST_DIR/config.sh
+      if [ -n "$INSTALL_PACKAGES" ]; then
+        sudo apt-get install -qq $INSTALL_PACKAGES
+      fi
     fi
 
     result=0
