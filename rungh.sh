@@ -16,9 +16,7 @@ fi
 cd submission
 export SUBMISSION_DIR=$(pwd)
 
-# Extract project name from github remote value
-# Repo name should be of the form (ex.) cps250-project-student_github_username
-project=$(git remote get-url origin | cut -d/ -f5 | cut -d- -f2)
+project=$(get-project-name)
 echo "$project submission detected"
 
 export TEST_DIR=$TEST_BASE_DIR/$project

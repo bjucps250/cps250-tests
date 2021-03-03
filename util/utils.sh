@@ -32,6 +32,20 @@ function exit-if-must-pass-tests-failed {
     must-pass-tests-failed && exit 1
 }
 
+# Detect project name
+#
+# Usage: project=$(get-project-name)
+#
+function get-project-name {
+    if [ -n "$PROJECT_NAME" ]; then
+        echo $PROJECT_NAME
+    else
+        # Extract project name from github remote URL
+        # Repo name should be of the form (ex.) cps250-project-student_github_username
+        git remote get-url origin | cut -d/ -f5 | cut -d- -f2
+    fi
+}
+
 # Returns 0 on success, 1 on failure
 function run-tests {
     # Read test config if it exists
@@ -41,7 +55,7 @@ function run-tests {
         # Install required packages
         if [[ "$MY_PKG_CACHE_HIT" == 'true' ]]; then
           # Install package files from cache
-          echo "Installing package files from cache..."
+          echo "Restoring package files from cache..."
           sudo cp --force --recursive ~/my-packages/* /
         else
           echo "Installing required packages..."
@@ -60,6 +74,7 @@ function run-tests {
       fi
     fi
 
+    echo "Beginning test run with timeout $TIMEOUT"
     result=0
     if BASH_ENV=$TEST_BASE_DIR/util/utils.sh timeout -k $TIMEOUT $TIMEOUT bash _runtests.sh >$LOG_FILE 2>&1
     then
