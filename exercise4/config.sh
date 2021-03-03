@@ -1,1 +1,1 @@
-INSTALL_PACKAGES=libbsd-dev
+INSTALL_PACKAGES="libbsd-dev"

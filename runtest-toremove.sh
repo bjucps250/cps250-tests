@@ -7,7 +7,7 @@ project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2 | cut -d- -f2)
 image=checkmark.svg
 if [ -e $project ]
 then
-    pushd $project
+    pushd $project    
     if bash runtests.sh >>../log.txt 2>&1
     then
         echo Success        

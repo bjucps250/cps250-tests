@@ -24,19 +24,20 @@ cp -r /submission_src /submission
 cd /submission
 
 export SUBMISSION_DIR=$(pwd)
+export NO_INSTALL_PACKAGES=1  # Disable installation of packages since the local Docker image already includes everything
 
-result=PASS
+overall_test_result=PASS
 if [ -e $TEST_DIR/_runtests.sh ]
 then
     # Copy test files to submission folder
     cp -r $TEST_DIR/_* .
 
-    run-tests || result=FAIL
+    run-tests || overall_test_result=FAIL
 else
     echo No tests for $project submissions... >$LOG_FILE
 fi
 
-gen-readme $result
+gen-readme $overall_test_result
 
 echo Log file
 echo -------------------------

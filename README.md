@@ -15,3 +15,17 @@ runi
 # rt lab1
 ```
 
+# Configuring Assignments
+
+Create config.sh in an assignment folder to specify assignment configuration.
+
+Options include:
+* INSTALL_PACKAGES - specify packages to install
+
+  ```
+  INSTALL_PACKAGES="valgrind libbsd-dev"
+  ```
+
+* NO_PACKAGE_CACHE - set to 1 to disable caching of INSTALL_PACKAGES (during initial testing)
+
+* TIMEOUT - overall timeout in seconds for the test (default 30)

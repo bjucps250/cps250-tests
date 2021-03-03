@@ -7,29 +7,7 @@ function runit {
 
 require-files httpv.c Makefile
 
-# ---- Compile --------
-
-result=$PASS
-COMPILE_CMD="make"
-echo $COMPILE_CMD
-echo -n "Result: "
-if detail=$($COMPILE_CMD 2>&1); then
-    if [ ! -e httpv ]; then
-        result=$FAIL
-        detail="No executable httpv produced from make"
-    fi
-else
-    result=$FAIL
-fi
-
-echo $result
-if [ $result = $FAIL ]; then
-    echo "----------------------------------------------------------------"
-    echo "$detail"
-    echo "----------------------------------------------------------------"
-fi
-
-report-result $result "$CAT_MUST_PASS" "Successful compile"
+do-compile "make" "httpv"
 
 exit-if-must-pass-tests-failed
 
