@@ -44,7 +44,8 @@ function run-tests {
           echo "Installing package files from cache..."
           sudo cp --force --recursive ~/my-packages/* /
         else
-          sudo apt-get update && sudo apt-get install -yq $INSTALL_PACKAGES
+          echo "Installing required packages..."
+          sudo apt-get install -yq $INSTALL_PACKAGES
           if [ -z "$NO_PACKAGE_CACHE" ]; then
             # Save installed files to my-packages to be cached
             mkdir -p ~/my-packages
