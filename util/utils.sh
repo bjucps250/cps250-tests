@@ -19,7 +19,7 @@ function report-error {
     echo "FAIL~$1~$2" >> $TEST_RESULT_FILE
 }
 
-# Usage: report-error PASS|FAIL test-category test-name detail-msg
+# Usage: report-result PASS|FAIL test-category test-name 
 function report-result {
     echo "$1~$2~$3" >> $TEST_RESULT_FILE
 }
@@ -49,8 +49,8 @@ function get-project-name {
 # Returns 0 on success, 1 on failure
 function run-tests {
     # Read test config if it exists
-    if [ -r $TEST_DIR/config.sh ]; then
-      . $TEST_DIR/config.sh
+    if [ -r $TEST_DIR/_config.sh ]; then
+      . $TEST_DIR/_config.sh
       if [ -n "$INSTALL_PACKAGES" -a -z "$NO_INSTALL_PACKAGES" ]; then
         # Install required packages
         if [[ "$MY_PKG_CACHE_HIT" == 'true' ]]; then
@@ -93,9 +93,14 @@ function run-tests {
 
 function gen-readme {
 
-    local final_result=$1
+    local final_result
+    
+    final_result=$PASS
+    if must-pass-tests-failed; then
+        final_result=$FAIL
+    fi
 
-    echo $1 >$SUBMISSION_DIR/submission.status
+    echo $final_result >$SUBMISSION_DIR/submission.status
 
     if [ $final_result = "$PASS" ]; then
         icon=https://raw.githubusercontent.com/bjucps250/cps250-tests/master/images/pass.png
@@ -110,7 +115,8 @@ Test results generated at **$(TZ=America/New_York date)**
 
 Category | Test | Result
 ---------|------|-------
-$(awk -F~ -f $TEST_BASE_DIR/util/gentable.awk $TEST_RESULT_FILE)
+$(awk -F~ -f $TEST_BASE_DIR/util/gentable.awk $TEST_RESULT_FILE | grep "^Must Pass")
+$(awk -F~ -f $TEST_BASE_DIR/util/gentable.awk $TEST_RESULT_FILE | grep -v "^Must Pass")
 
 ## Detailed Test Results
 \`\`\`
@@ -120,8 +126,20 @@ EOF
 
 }
 
+# Usage: require-files [ --test-category <cat> ] [ --test-message <msg> ] file...
 function require-files {
     local result overallresult
+    local testcategory="$CAT_MUST_PASS"
+    local testmessage="Required Files Submitted"
+
+    if [ "$1" = "--test-category" ]; then
+        testcategory=$2
+        shift 2
+    fi
+    if [ "$1" = "--test-message" ]; then
+        testmessage=$2
+        shift 2
+    fi
 
     overallresult=$PASS
     for file in $*
@@ -131,10 +149,10 @@ function require-files {
             result=$FAIL
             overallresult=$FAIL
         fi
-        echo "Checking for required file $file... $result"
+        echo -e "\nChecking for required file $file... $result"
     done
 
-    report-result $overallresult "$CAT_MUST_PASS" "Required Files Submitted"
+    report-result $overallresult "$testcategory" "$testmessage"
 
 }
 
@@ -145,7 +163,7 @@ function require-pdf {
     overallresult=$PASS
     for file in $*
     do
-        echo -n "Checking for required PDF $file... "
+        echo -en "\nChecking for required PDF $file... "
         if [ ! -r $file ]; then
             echo "$FAIL - $file is not found"
             overallresult=$FAIL
@@ -249,4 +267,29 @@ function run-program {
     fi
 
     [ $result = $PASS ]
+}
+
+function forbidden-string-function-check {
+
+    local result
+
+    [ -r /tmp/forbidden-string-log ] && rm /tmp/forbidden-string-log
+    result=$PASS
+    for file in $*
+    do
+        for func in strcpy strncpy strcat strncat sprintf
+        do
+        if grep $func $file >/dev/null
+        then
+            result=$FAIL
+            echo "* $func detected in $file" >> /tmp/forbidden-string-log
+        fi
+        done
+    done
+
+    echo -e "\nChecking for forbidden string functions... $result"
+    [ -r /tmp/forbidden-string-log ] && cat /tmp/forbidden-string-log
+
+    report-result $result "Warnings" "No unsafe string functions"
+    [ $result = $PASS ] 
 }

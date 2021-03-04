@@ -26,6 +26,6 @@ Options include:
   INSTALL_PACKAGES="valgrind libbsd-dev"
   ```
 
-* NO_PACKAGE_CACHE - set to 1 to disable caching of INSTALL_PACKAGES (during initial testing)
+* NO_PACKAGE_CACHE - set to 1 to prevent GitHub from caching INSTALL_PACKAGES (during initial testing)
 
 * TIMEOUT - overall timeout in seconds for the test (default 30)

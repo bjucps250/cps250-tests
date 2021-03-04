@@ -21,13 +21,12 @@ echo "$project submission detected"
 
 export TEST_DIR=$TEST_BASE_DIR/$project
 
-overall_test_result=$PASS
 if [ -e $TEST_DIR/_runtests.sh ]
 then
     # Copy test files to submission folder
     cp -r $TEST_DIR/_* .
 
-    run-tests || overall_test_result=$FAIL
+    run-tests || report-error "Warning" "Test script completed successfully"
 else
     echo No tests have been defined for $project submissions... >$LOG_FILE
 fi
@@ -42,7 +41,7 @@ git config pull.rebase false  # merge (the default strategy)
 
 git pull 
 
-gen-readme $overall_test_result
+gen-readme
 
 git add README.md submission.status
 git commit -m "Automatic Tester Results"

@@ -13,20 +13,7 @@ exit-if-must-pass-tests-failed
 
 require-pdf report.pdf
 
-# ----- Check for forbidden string functions ---------
-
-result=PASS
-echo -e "\nChecking for forbidden string functions..."
-for func in strcpy strncpy strcat strncat sprintf
-do
-  if grep $func httpv.c >/dev/null
-  then
-    result=FAIL
-    echo "* $func detected"
-  fi
-done
-
-report-result $result "Warnings" "No unsafe string functions"
+forbidden-string-function-check httpv.c
 
 cp $TEST_DIR/*.txt .
 
