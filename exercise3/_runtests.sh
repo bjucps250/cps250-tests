@@ -11,5 +11,5 @@ require-pdf report.pdf
 
 forbidden-string-function-check args.c
 
-run-program --test-message "valgrind executes with no errors" --showoutputonpass valgrind ./args
+run-program --test-message "valgrind executes with no errors" --showoutputonpass valgrind ./args | sed 's/^==[^=]*==/====/'
 

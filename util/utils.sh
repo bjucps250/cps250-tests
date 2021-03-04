@@ -76,9 +76,9 @@ function run-tests {
 
     echo "Beginning test run with timeout $TIMEOUT"
     result=0
-    if BASH_ENV=$TEST_BASE_DIR/util/utils.sh timeout -k $TIMEOUT $TIMEOUT bash _runtests.sh >$LOG_FILE 2>&1
+    if BASH_ENV=$TEST_BASE_DIR/util/utils.sh timeout -k 1 $TIMEOUT bash _runtests.sh >$LOG_FILE 2>&1
     then
-        must-pass-tests-failed && result=1
+        echo "Must pass tests failed"
     else
         if [ $? -eq 124 ]; then
           report-error "$CAT_MUST_PASS" "Complete all tests within $TIMEOUT seconds"

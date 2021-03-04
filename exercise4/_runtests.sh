@@ -7,6 +7,8 @@ function runit {
 
 require-files httpv.c Makefile
 
+# Compile httpv
+[ -r httpv ] && rm httpv
 do-compile "make" "httpv"
 
 exit-if-must-pass-tests-failed
@@ -30,4 +32,4 @@ do
   runit ./httpv $FILE
 done
 
-
+exit 0
