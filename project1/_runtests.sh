@@ -48,17 +48,23 @@ fi
 result=$FAIL
 get="GET /file1.txt HTTP/1.0\r\n\r\n"
 echo -e "\nSending GET to server: $get"
-if stdout=$(echo -en "$get" | timeout 1 nc localhost 8080 2>&1 | tr -d '\r' >/tmp/test1.out); then
-  echo -e "\nExpected Result                       | Actual Result"
-  echo -e "------------------------------------------------------------------------------"
-  if diff -yZi -W 80 $TEST_DIR/test1.exp /tmp/test1.out; then
-    result=$PASS
-  else
-    result=$FAIL
-  fi
+if stdout=$(echo -en "$get" | timeout 1 nc localhost 8080 2>&1 >/tmp/test1.out); then
+  echo ''
 else
-  echo "Result: $stdout"
+  if [ $? -eq 124 ]; then
+    echo ---- Timeout waiting for response ----  >> /tmp/test1.out
+  fi
 fi
+
+echo -e "\nExpected Result                       | Actual Result"
+echo -e "------------------------------------------------------------------------------"
+tr -d '\r' < /tmp/test1.out > /tmp/test1.out2
+if diff -yZit -W 80 $TEST_DIR/test1.exp /tmp/test1.out2; then
+  result=$PASS
+else
+  result=$FAIL
+fi
+
 report-result $result "$CAT_MUST_PASS" "Correct server response to valid request"
 
 kill $(ps | grep webserver | awk ' {print $1} ')
