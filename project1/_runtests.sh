@@ -48,17 +48,14 @@ fi
 result=$FAIL
 get="GET /file1.txt HTTP/1.0\r\n\r\n"
 echo -e "\nSending GET to server: $get"
-if stdout=$(echo -en "$get" | timeout 1 nc localhost 8080 2>&1 >/tmp/test1.out); then
-  echo ''
-else
-  if [ $? -eq 124 ]; then
-    echo ---- Timeout waiting for response ----  >> /tmp/test1.out
-  fi
+echo -en "$get" | timeout 1 nc localhost 8080 2>&1 >/tmp/test1.out
+if [ $? -eq 124 ]; then
+  echo ---- Timeout waiting for response ----  >> /tmp/test1.out
 fi
 
-echo -e "\nExpected Result                       | Actual Result"
+echo -e "\nExpected Result                         | Actual Result"
 echo -e "------------------------------------------------------------------------------"
-tr -d '\r' < /tmp/test1.out > /tmp/test1.out2
+tr -d '\r' < /tmp/test1.out > /tmp/test1.out2 # Strip any carriage lines out for comparison / reporting purposes
 if diff -yZit -W 80 $TEST_DIR/test1.exp /tmp/test1.out2; then
   result=$PASS
 else
