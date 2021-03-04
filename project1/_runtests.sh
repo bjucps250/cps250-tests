@@ -36,7 +36,7 @@ if stdout=$(ps | grep webserver); then
   result=$PASS
 fi
 report-result $result "$CAT_MUST_PASS" "Successful server start"
-echo "Checking for successful server start... $result"
+echo -e "\nChecking for successful server start... $result"
 if [ $result = $FAIL ]; then
   dump-server-log
   exit
@@ -47,11 +47,11 @@ fi
 
 result=$FAIL
 get="GET /file1.txt HTTP/1.0\r\n\r\n"
-echo "Sending GET to server: $get"
-if stdout=$(echo -en "$get" | timeout 1 nc localhost 8080 >/tmp/test1.out 2>&1); then
-  echo -e "\nExpected Result              |  Actual Result"
-  echo -e "--------------------------------------------------------------------"
-  if diff -y -W 60 $TEST_DIR/test1.exp /tmp/test1.out; then
+echo -e "\nSending GET to server: $get"
+if stdout=$(echo -en "$get" | timeout 1 nc localhost 8080 2>&1 | tr -d '\r' >/tmp/test1.out); then
+  echo -e "\nExpected Result                       | Actual Result"
+  echo -e "------------------------------------------------------------------------------"
+  if diff -yZi -W 80 $TEST_DIR/test1.exp /tmp/test1.out; then
     result=$PASS
   else
     result=$FAIL
@@ -59,7 +59,7 @@ if stdout=$(echo -en "$get" | timeout 1 nc localhost 8080 >/tmp/test1.out 2>&1);
 else
   echo "Result: $stdout"
 fi
-report-result $result "$CAT_MUST_PASS" "Server responds to valid request"
+report-result $result "$CAT_MUST_PASS" "Correct server response to valid request"
 
 kill $(ps | grep webserver | awk ' {print $1} ')
 sleep 1
