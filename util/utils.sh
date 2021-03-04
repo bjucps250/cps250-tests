@@ -221,14 +221,14 @@ function do-compile {
 #    run-program --test-message "valgrind executes with no errors" --showoutputonpass valgrind ./args
 #
 function run-program {
-    local testcategory="Warnings" 
+    local testcategory="Warning" 
     local testmessage
     local timeout=30              # Default timeout
     local showoutputonpass=0 
     local maxlines=50
     local result
 
-    testcategory="Warnings"
+    testcategory="Warning"
     if [ "$1" = "--test-category" ]; then
         testcategory=$2
         shift 2
@@ -290,6 +290,6 @@ function forbidden-string-function-check {
     echo -e "\nChecking for forbidden string functions... $result"
     [ -r /tmp/forbidden-string-log ] && cat /tmp/forbidden-string-log
 
-    report-result $result "Warnings" "No unsafe string functions"
+    report-result $result "Warning" "No unsafe string functions"
     [ $result = $PASS ] 
 }
