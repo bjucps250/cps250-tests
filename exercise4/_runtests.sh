@@ -9,7 +9,7 @@ require-files httpv.c Makefile
 
 # Compile httpv
 [ -r httpv ] && rm httpv
-do-compile "make" "httpv"
+do-compile --always-show-output "make" "httpv"
 
 exit-if-must-pass-tests-failed
 
@@ -31,5 +31,9 @@ for FILE in good*.txt bad*.txt
 do
   runit ./httpv $FILE
 done
+
+if is-local-test; then
+  runit valgrind ./httpv goodhttp02.txt 2>&1 | sed 's/^==[^=]*==/====/'
+fi
 
 exit 0

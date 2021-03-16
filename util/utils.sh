@@ -46,6 +46,11 @@ function get-project-name {
     fi
 }
 
+# returns 0 if this test is run locally
+function is-local-test {
+    [ -z "$GITHUB_WORKFLOW" ]
+}
+
 # Returns 0 on success, 1 on failure
 function run-tests {
     # Read test config if it exists
@@ -182,12 +187,21 @@ function require-pdf {
 # Compiles a program and reports success or failure
 # Usage: do-compile <compile command> [ <expected executable> ]
 # Example:
-#     do-compile "gcc -g myproc.c -omyprog" "myprog" 
+#     do-compile [ --always-show-output ] "gcc -g myproc.c -omyprog" "myprog" 
 function do-compile {
     local result=$FAIL
     local detail
-    local compile_cmd=$1
-    local expected_exe=$2
+    local always_show=0
+    local compile_cmd
+    local expected_exe
+    
+    if [ "$1" = "--always-show-output" ]; then
+        always_show=1
+        shift
+    fi
+
+    compile_cmd=$1
+    expected_exe=$2
 
     if detail=$($compile_cmd 2>&1); then
         result=$PASS
@@ -198,7 +212,7 @@ function do-compile {
     fi
 
     echo -e "\nExecuting: $compile_cmd... $result"
-    if [ $result = $FAIL ]; then
+    if [ $result = $FAIL -o $always_show -eq 1 ]; then
         echo "----------------------------------------------------------------"
         echo "$detail"
         echo "----------------------------------------------------------------"

@@ -3,7 +3,7 @@ require-files args.c
 
 # ---- Compile --------
 
-do-compile "gcc -g  $TEST_DIR/ex3_args_test.c args.c -oargs -lbsd"
+do-compile --always-show-output "gcc -g  $TEST_DIR/ex3_args_test.c args.c -oargs -lbsd"
 
 exit-if-must-pass-tests-failed
 
