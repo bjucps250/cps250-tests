@@ -3,4 +3,4 @@ Content-Type: text/plain
 
 Welcome to my server.
 Request verb: GET
-Requested file: ./test1.txt
+Requested file: ./file1.txt
