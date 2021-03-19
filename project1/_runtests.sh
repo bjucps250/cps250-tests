@@ -18,7 +18,12 @@ exit-if-must-pass-tests-failed
 
 cp $TEST_DIR/file* .
 
-require-pdf report.pdf
+if [ -r CHECKPOINT.md ]; then
+  echo "Checkpoint submission detected. No report.pdf required."
+else
+  require-pdf report.pdf
+fi
+
 
 forbidden-string-function-check *.c
 
