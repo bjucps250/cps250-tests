@@ -48,5 +48,4 @@ git commit -m "Automatic Tester Results"
 
 git push
 
-[ $overall_test_result = $PASS ]
 
