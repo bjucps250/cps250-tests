@@ -8,15 +8,15 @@ function dump-server-log {
 
 }
 
-require-files Makefile webserver.c
-require-files --test-category "Warning" --test-message "utils.c submitted" utils.c
+require-files Makefile 
+require-files --test-category "Warning" --test-message "webserver.c, utils.c submitted" webserver.c utils.c
 
 [ -r webserver ] && rm webserver *.o
 do-compile "make release" "webserver"
 
 exit-if-must-pass-tests-failed
 
-cp $TEST_DIR/file* .
+cp $TEST_DIR/* .
 
 if [ -r CHECKPOINT.md ]; then
   echo "Checkpoint submission detected. No report.pdf required."
@@ -25,7 +25,7 @@ else
 fi
 
 
-forbidden-string-function-check *.c
+forbidden-string-function-check $(find . -name '*.c')
 
 # -------------------------------------
 # Start web server
@@ -50,8 +50,14 @@ fi
 # ------------------------------------------
 # Check to see if it responds to valid request
 
+if [ -r CHECKPOINT.md ]; then
+  FILENAME=file1
+else
+  FILENAME=test1
+fi
+
 result=$FAIL
-get="GET /file1.txt HTTP/1.0\r\n\r\n"
+get="GET /$FILENAME.txt HTTP/1.0\r\n\r\n"
 echo -e "\nSending GET to server: $get"
 echo -en "$get" | timeout 1 nc localhost 8080 2>&1 >/tmp/test1.out
 if [ $? -eq 124 ]; then
@@ -61,7 +67,7 @@ fi
 echo -e "\nExpected Result                         | Actual Result"
 echo -e "------------------------------------------------------------------------------"
 tr -d '\r' < /tmp/test1.out > /tmp/test1.out2 # Strip any carriage lines out for comparison / reporting purposes
-if diff -yZit -W 80 $TEST_DIR/test1.exp /tmp/test1.out2; then
+if diff -yZit -W 80 $TEST_DIR/$FILENAME.exp /tmp/test1.out2; then
   result=$PASS
 else
   result=$FAIL

@@ -1,6 +1,5 @@
 HTTP/1.0 200 OK
 Content-Type: text/plain
 
-Welcome to my server.
-Request verb: GET
-Requested file: ./file1.txt
+This is a text file
+Not much here 
