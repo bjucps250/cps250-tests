@@ -176,7 +176,7 @@ function require-pdf {
             echo "$PASS"
         else
             echo "$FAIL - $file is not a valid PDF"
-            overallresultresult=$FAIL
+            overallresult=$FAIL
         fi
     done
 
