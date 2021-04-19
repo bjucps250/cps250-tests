@@ -5,4 +5,4 @@
 cp -r /submission_src /submission
 cp -r /wwwroot_src /wwwroot
 cd /submission
-make release && ./webserver -r /wwwroot -p 5000 -h 0.0.0.0
+make release && valgrind ./webserver -r /wwwroot -p 5000 -h 0.0.0.0
