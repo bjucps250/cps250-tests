@@ -1,3 +1,5 @@
+cp $TEST_DIR/*.in .
+
 if [ ! -z "$(ls *.c 2>/dev/null)" ]; then
 
   for CFILE in *.c 
@@ -27,11 +29,11 @@ do
     fi
 
     if [ "$prog" = "check" ]; then
-      CMD="$CMD /etc/resolv.conf /bin/ls /etc/aliases"
+      CMD="$CMD README.md /bin/ls ema1.in"
     elif [ "$prog" = "findword" ]; then
-      CMD="$CMD config /etc/*.conf"
+      CMD="$CMD config findword*.in"
     else
-      CMD="$CMD $TEST_DIR/ema.in"
+      CMD="$CMD ema1.in"
     fi
     
     run-program --test-message "$prog executes with no errors" --showoutputonpass "$CMD"
