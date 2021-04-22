@@ -1,9 +1,5 @@
 cp $TEST_DIR/*.in .
 
-result=$FAIL
-if ls *.c *.sh *.py >dev/null 2>&1; then
-  result=$PASS
-fi
 
 if [ ! -z "$(ls *.c 2>/dev/null)" ]; then
 
@@ -17,8 +13,6 @@ if [ ! -z "$(ls *.c 2>/dev/null)" ]; then
   done
 
 fi
-
-exit-if-must-pass-tests-failed
 
 result=$FAIL
 for prog in check findword ema
