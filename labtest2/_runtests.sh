@@ -1,5 +1,10 @@
 cp $TEST_DIR/*.in .
 
+result=$FAIL
+if ls *.c *.sh *.py >dev/null 2>&1; then
+  result=$PASS
+fi
+
 if [ ! -z "$(ls *.c 2>/dev/null)" ]; then
 
   for CFILE in *.c 
@@ -15,6 +20,7 @@ fi
 
 exit-if-must-pass-tests-failed
 
+result=$FAIL
 for prog in check findword ema
 do
 
@@ -37,8 +43,11 @@ do
     fi
     
     run-program --test-message "$prog executes with no errors" --showoutputonpass "$CMD"
+    result=$PASS
   else
     echo "No $prog submission detected"
   fi
 
 done
+
+report-result $result "Must Pass" "At least one correctly named file submitted"
